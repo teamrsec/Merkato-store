@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import {
   X,
@@ -11,8 +11,20 @@ import {
 } from 'lucide-react';
 
 export default function QuickViewModal() {
+  const { quickViewProduct } = useStore();
+
+  if (!quickViewProduct) return null;
+
+  return (
+    <QuickViewContent
+      key={quickViewProduct.id}
+      product={quickViewProduct}
+    />
+  );
+}
+
+function QuickViewContent({ product }) {
   const {
-    quickViewProduct,
     setQuickViewProduct,
     addToCart,
     toggleWishlist,
@@ -24,23 +36,14 @@ export default function QuickViewModal() {
     openProductDetail
   } = useStore();
 
-  const product = quickViewProduct;
-
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(() => product?.colors?.[0] || '');
-  const [selectedSize, setSelectedSize] = useState(() => product?.sizes?.[0] || '');
+  const [selectedColor, setSelectedColor] = useState(
+    () => product.colors?.[0] ?? ''
+  );
+  const [selectedSize, setSelectedSize] = useState(
+    () => product.sizes?.[0] ?? ''
+  );
   const [quantity, setQuantity] = useState(1);
-
-  useEffect(() => {
-    if (product) {
-      setActiveImageIndex(0);
-      setSelectedColor(product.colors?.[0] || '');
-      setSelectedSize(product.sizes?.[0] || '');
-      setQuantity(1);
-    }
-  }, [product?.id]);
-
-  if (!product) return null;
 
   const images = product.images || [product.image];
   const isWishlisted = isProductWishlisted(product.id);

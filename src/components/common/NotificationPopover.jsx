@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { Bell, X, Package, Tag, Flame, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Bell, Package, Flame } from 'lucide-react';
 
 export default function NotificationPopover({ isOpen, onClose }) {
   const { notifications, markAllNotificationsAsRead, lang, setCurrentView } = useStore();
